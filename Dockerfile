@@ -7,7 +7,7 @@ FROM dclong/jupyterhub
 RUN curl -s -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update -y \
-    && apt-get -y install google-chrome-stable unzip
+    && apt-get -y install xvfb google-chrome-stable unzip
 
 RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-9]+){3}.*/\1/") \
     && CHROME_DRIVER_VERSION=$(wget --no-verbose -O - "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}") \
@@ -16,3 +16,5 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
     && rm /tmp/chromedriver_linux64.zip \
     && chmod 755 /opt/selenium/chromedriver \
     && ln -svf /opt/selenium/chromedriver /usr/bin/chromedriver
+    
+RUN pip3 install selenium
